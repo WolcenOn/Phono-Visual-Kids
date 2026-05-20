@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PhonoVisual Kids Pro - Calibrado</title>
+<style>
+:root{
+  --violet:#7c3aed;--violet2:#5b21b6;--sky:#38bdf8;--green:#22c55e;--rose:#fb7185;
+  --amber:#f59e0b;--text:#172033;--muted:#64748b;--glass:rgba(255,255,255,.8);
+  --shadow:0 24px 55px rgba(70,60,130,.18);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);
+  background:radial-gradient(circle at 10% 5%,#fbcfe8 0,transparent 28%),
+             radial-gradient(circle at 90% 10%,#bae6fd 0,transparent 30%),
+             linear-gradient(135deg,#ede9fe,#e0f2fe,#fef3c7);
+  overflow-x:hidden;
+}
+.page{width:min(1280px,100%);margin:0 auto;padding:22px}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:center;margin-bottom:22px}
+.badge{display:inline-flex;gap:8px;align-items:center;padding:9px 16px;border-radius:999px;background:var(--glass);color:var(--violet2);font-weight:950;box-shadow:0 8px 22px rgba(70,60,130,.1);backdrop-filter:blur(12px)}
+h1{margin:14px 0 10px;font-size:clamp(2.2rem,6vw,4.7rem);line-height:.95;letter-spacing:-.055em}
+h1 span{color:var(--violet)}
+.subtitle{max-width:760px;margin:0;color:var(--muted);font-size:1.1rem;line-height:1.55;font-weight:680}
+.card{border-radius:30px;background:var(--glass);box-shadow:var(--shadow);backdrop-filter:blur(14px)}
+.info-card{padding:20px}
+.activity-main{display:flex;gap:14px;align-items:center}
+.activity-icon{width:70px;height:70px;display:grid;place-items:center;border-radius:24px;background:#ede9fe;font-size:2.25rem}
+.eyebrow{margin:0 0 3px;color:#94a3b8;font-size:.76rem;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+.activity-title{margin:0;font-size:1.52rem;font-weight:950}
+.note{margin:14px 0 0;padding:13px 14px;border-radius:18px;background:rgba(241,245,249,.86);color:#475569;font-weight:760;line-height:1.45}
+.layout{display:grid;grid-template-columns:390px 1fr;gap:22px}
+.sidebar{display:grid;gap:18px;align-content:start}
+.panel{padding:20px}
+.panel h2{margin:0 0 14px;font-size:1.25rem;font-weight:950}
+.mission-list{display:grid;gap:10px}
+.mission-btn{
+  display:flex;gap:12px;align-items:center;width:100%;padding:13px;border:0;border-radius:22px;background:#f1f5f9;color:#334155;
+  text-align:left;cursor:pointer;transition:transform .18s ease,background .18s ease,color .18s ease,box-shadow .18s ease
+}
+.mission-btn:hover{transform:translateY(-2px);background:#e2e8f0}
+.mission-btn.active{background:var(--violet);color:white;box-shadow:0 14px 28px rgba(124,58,237,.25)}
+.mission-icon{width:42px;min-width:42px;font-size:1.75rem}.mission-name{display:block;font-size:.98rem;font-weight:950}
+.mission-help{display:block;margin-top:2px;color:inherit;opacity:.72;font-size:.84rem;font-weight:760;line-height:1.32}
+.main-button{
+  width:100%;min-height:58px;border:0;border-radius:24px;background:linear-gradient(135deg,#22c55e,#14b8a6);color:white;
+  font-size:1.05rem;font-weight:950;cursor:pointer;box-shadow:0 16px 30px rgba(34,197,94,.25);transition:transform .16s ease,filter .16s ease
+}
+.main-button:hover{transform:translateY(-2px)}.main-button.stop{background:linear-gradient(135deg,#fb7185,#f43f5e)}
+.small-help{margin:10px 0 0;color:var(--muted);font-weight:750;line-height:1.4}
+.mic-status{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:#f1f5f9;color:#64748b;font-size:.8rem;font-weight:950;margin-bottom:12px}
+.mic-status.on{background:#dcfce7;color:#15803d}.mic-status.warn{background:#fff7ed;color:#9a3412}
+.meter-box{display:flex;align-items:center;gap:14px;padding:14px;border-radius:22px;background:#f1f5f9;margin-top:14px}
+.meter-icon{font-size:1.55rem}.meter-label{margin:0;color:#64748b;font-size:.84rem;font-weight:850}.meter-number{margin:0;font-size:1.7rem;font-weight:950}
+.audio-bars{display:grid;gap:8px;margin-top:14px}
+.audio-row{display:grid;grid-template-columns:54px 1fr 42px;gap:8px;align-items:center;color:#64748b;font-size:.76rem;font-weight:950}
+.audio-track{height:10px;border-radius:999px;overflow:hidden;background:#e2e8f0}
+.audio-fill{width:0%;height:100%;border-radius:999px;background:linear-gradient(90deg,#8b5cf6,#38bdf8,#22c55e);transition:width .08s linear}
+.calib-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.calib-btn{
+  border:0;border-radius:18px;background:#f1f5f9;padding:10px 6px;font-weight:950;color:#334155;cursor:pointer;
+  display:grid;gap:4px;place-items:center;min-height:60px
+}
+.calib-btn.done{background:#dcfce7;color:#166534}
+.calib-btn.recording{background:#fee2e2;color:#991b1b;animation:pulse 1s infinite}
+.calib-btn span:first-child{font-size:1.2rem}.calib-btn small{font-weight:800;color:inherit;opacity:.75}
+.calib-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.secondary-btn{border:0;border-radius:16px;background:#ede9fe;color:var(--violet2);font-weight:950;padding:11px;cursor:pointer}
+.secondary-btn.danger{background:#fee2e2;color:#991b1b}
+.reward-card{padding:18px}.reward-top{display:flex;justify-content:space-between;margin-bottom:10px;font-size:.92rem;font-weight:950}
+.progress{height:24px;overflow:hidden;border-radius:999px;background:#e2e8f0}
+.progress-fill{width:0%;height:100%;border-radius:999px;background:linear-gradient(90deg,#86efac,#fde047,#fb7185);transition:width .12s linear}
+.streak-card{padding:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.streak-item{padding:12px 8px;border-radius:20px;background:rgba(255,255,255,.68)}
+.streak-number{display:block;font-size:1.45rem;font-weight:950;color:var(--violet2)}.streak-label{color:var(--muted);font-size:.76rem;font-weight:850}
+.main-area{display:grid;gap:18px}
+.scene{position:relative;min-height:500px;overflow:hidden;border-radius:34px;background:linear-gradient(180deg,#dbeafe,#fce7f3);box-shadow:var(--shadow)}
+.scene.plane{background:linear-gradient(180deg,#cffafe,#dbeafe,#d1fae5)}.scene.warm{background:linear-gradient(180deg,#fef3c7,#fed7aa,#ffe4e6)}
+.target-badge{position:absolute;top:20px;left:50%;transform:translateX(-50%);z-index:8;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.78);font-weight:950;box-shadow:0 10px 24px rgba(70,60,130,.12);backdrop-filter:blur(10px);white-space:nowrap}
+.cloud,.tree,.school,.planet,.star,.wind-particle,.bubble{position:absolute;pointer-events:none;user-select:none}
+.cloud{font-size:4.1rem;opacity:.86;animation:float 5s ease-in-out infinite}.cloud.one{left:8%;top:20%}.cloud.two{right:12%;top:15%;animation-delay:-1.5s}
+.planet{right:16%;top:27%;font-size:3rem;animation:float 6s ease-in-out infinite}.star{font-size:1.35rem;opacity:.65;animation:twinkle 1.8s ease-in-out infinite}
+.ground{position:absolute;left:-8%;right:-8%;bottom:-50px;height:160px;border-radius:50% 50% 0 0;background:linear-gradient(#bbf7d0,#86efac);z-index:1}
+.tree{left:7%;bottom:76px;font-size:4.1rem;z-index:2}.school{right:8%;bottom:78px;font-size:4.7rem;z-index:2}
+.character{position:absolute;z-index:5;font-size:6.4rem;filter:drop-shadow(0 18px 18px rgba(30,41,59,.22));will-change:transform}
+#rocketCharacter{left:50%;bottom:96px;transform:translateX(-50%)}
+.flame{position:absolute;left:50%;top:78%;transform:translateX(-50%);font-size:3.2rem;opacity:0;animation:flame .28s ease-in-out infinite}
+#planeCharacter{left:8%;top:47%;display:none}#flowerCharacter{left:50%;bottom:105px;display:none;transform:translateX(-50%);font-size:8rem}
+#beeCharacter{left:12%;top:45%;display:none;font-size:6rem}#candleCharacter{left:50%;bottom:105px;display:none;transform:translateX(-50%);font-size:8rem}
+#drumCharacter{left:50%;top:52%;display:none;transform:translate(-50%,-44%);font-size:9rem}
+.wind-particle{display:none;z-index:4;font-size:2rem;opacity:.78;animation:wind 1.25s linear infinite}
+.wind-particle:nth-of-type(1){left:7%;top:38%;animation-delay:0s}.wind-particle:nth-of-type(2){left:20%;top:48%;animation-delay:-.25s}
+.wind-particle:nth-of-type(3){left:36%;top:42%;animation-delay:-.5s}.wind-particle:nth-of-type(4){left:52%;top:54%;animation-delay:-.75s}
+.bubble{display:none;padding:10px 16px;border-radius:999px;background:#fde047;color:#c2410c;font-size:1.5rem;font-weight:950;box-shadow:0 12px 22px rgba(249,115,22,.24);z-index:7;animation:pop .45s ease-out}
+.bubble.show{display:block}
+.scene-message{position:absolute;left:24px;right:24px;bottom:24px;z-index:8;padding:15px;border-radius:26px;background:rgba(255,255,255,.84);text-align:center;font-size:1.15rem;font-weight:950;box-shadow:0 12px 28px rgba(70,60,130,.14);backdrop-filter:blur(10px)}
+.voice-card{padding:20px;display:grid;grid-template-columns:1fr 250px;gap:18px;align-items:center}
+.voice-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:12px}.voice-header h2{margin:0;font-size:1.28rem;font-weight:950}
+.phoneme-pill{padding:7px 12px;border-radius:999px;background:#ede9fe;color:var(--violet2);font-size:.82rem;font-weight:950;white-space:nowrap}
+canvas{width:100%;height:130px;border-radius:26px;background:rgba(255,255,255,.72);box-shadow:inset 0 4px 18px rgba(15,23,42,.08)}
+.tip{min-height:150px;display:grid;place-items:center;padding:20px;border-radius:28px;background:linear-gradient(135deg,#fef3c7,#fce7f3);text-align:center;box-shadow:inset 0 4px 20px rgba(70,60,130,.08)}
+.tip-small{margin:0 0 6px;color:var(--rose);font-size:.78rem;font-weight:950;letter-spacing:.08em;text-transform:uppercase}.tip-text{margin:0;font-size:1.18rem;font-weight:950}
+#detailBox{margin-top:10px;padding:12px;border-radius:18px;background:#f8fafc;color:#475569;font-size:.85rem;font-weight:760;line-height:1.38}
+#welcome{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(36,20,74,.72);backdrop-filter:blur(18px);transition:opacity .35s ease}
+#welcomeBox{width:min(560px,100%);border-radius:36px;background:rgba(255,255,255,.94);box-shadow:0 30px 80px rgba(31,41,55,.28);padding:34px;text-align:center}
+.welcome-icon{display:inline-grid;place-items:center;width:92px;height:92px;border-radius:28px;background:linear-gradient(135deg,#ede9fe,#dbeafe);font-size:3rem;margin-bottom:18px}
+#welcome h2{margin:0;font-size:clamp(2rem,7vw,3.2rem);line-height:.95;letter-spacing:-.05em}#welcome h2 span{color:var(--violet)}
+#welcome p{color:#64748b;font-weight:750;line-height:1.55;margin:16px 0}.welcome-hint{text-align:left;border-radius:22px;background:#f8fafc;padding:15px;color:#475569;font-size:.92rem;line-height:1.55;font-weight:720;margin-bottom:18px}.welcome-hint b{color:var(--violet2)}
+#welcomeButton{width:100%;min-height:62px;border:0;border-radius:24px;background:linear-gradient(135deg,#7c3aed,#38bdf8);color:white;font-size:1.05rem;font-weight:950;cursor:pointer;box-shadow:0 16px 30px rgba(124,58,237,.25)}
+#welcomeButton:disabled{opacity:.65;cursor:wait}#skipButton{margin-top:12px;border:0;background:transparent;color:#64748b;font-weight:850;cursor:pointer}
+#welcomeError{display:none;margin-top:14px;padding:13px;border-radius:18px;background:#fee2e2;color:#991b1b;text-align:left;font-weight:760;line-height:1.45}#welcomeError.show{display:block}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}@keyframes twinkle{0%,100%{transform:scale(.85);opacity:.35}50%{transform:scale(1.2);opacity:.95}}
+@keyframes flame{0%,100%{transform:translateX(-50%) scale(.85);opacity:.72}50%{transform:translateX(-50%) scale(1.16);opacity:1}}
+@keyframes wind{0%{transform:translateX(-20px);opacity:0}30%{opacity:.86}100%{transform:translateX(110px);opacity:0}}
+@keyframes pop{0%{transform:scale(.4) rotate(-18deg);opacity:0}65%{transform:scale(1.16) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@media(max-width:1020px){.hero,.layout,.voice-card{grid-template-columns:1fr}.scene{min-height:440px}}
+@media(max-width:560px){.page{padding:14px}.panel,.info-card,.voice-card{padding:16px}.scene{min-height:400px;border-radius:28px}.character{font-size:5.3rem}#drumCharacter{font-size:7.3rem}.cloud{font-size:3.1rem}.tree,.school{font-size:3.3rem}.streak-card{grid-template-columns:1fr}#welcomeBox{padding:24px}.calib-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div id="welcome">
+  <div id="welcomeBox">
+    <div class="welcome-icon">🎤</div>
+    <h2>PhonoVisual <span>Kids Pro</span></h2>
+    <p>Esta versión usa micrófono y calibración por niño. Primero activa el micro; después graba ejemplos de cada letra.</p>
+    <div class="welcome-hint">
+      <b>Para probar:</b> abre desde <b>localhost</b> o <b>HTTPS</b>. Con VS Code puedes usar Live Server.<br>
+      <b>Consejo:</b> calibra al menos R y S antes de compararlas. Cada grabación dura 3 segundos.
+    </div>
+    <button id="welcomeButton">▶ ACTIVAR MICRÓFONO</button>
+    <div id="welcomeError"></div>
+    <button id="skipButton">Continuar en modo manual →</button>
+  </div>
+</div>
+
+<main class="page">
+  <section class="hero">
+    <div>
+      <div class="badge">✨ Logopedia visual con clasificador calibrado</div>
+      <h1>PhonoVisual <span>Kids Pro</span></h1>
+      <p class="subtitle">Calibra la voz del niño y el juego compara cada sonido con sus propios perfiles: R, S, A, M, F y golpes P/T.</p>
+    </div>
+    <div class="card info-card">
+      <div class="activity-main">
+        <div class="activity-icon" id="activityIcon">🚀</div>
+        <div>
+          <p class="eyebrow">Actividad actual</p>
+          <p class="activity-title" id="activityTitle">Cohete RRR</p>
+        </div>
+      </div>
+      <p class="note">La mejor opción sin servidor: clasificador por perfiles acústicos en navegador. No es diagnóstico clínico, pero mejora mucho frente a umbrales fijos.</p>
+    </div>
+  </section>
+
+  <section class="layout">
+    <aside class="sidebar">
+      <div class="card panel">
+        <h2>Elige una misión</h2>
+        <div class="mission-list">
+          <button class="mission-btn active" data-mode="rocket"><span class="mission-icon">🚀</span><span><span class="mission-name">Cohete RRR</span><span class="mission-help">R sostenida para despegar.</span></span></button>
+          <button class="mission-btn" data-mode="plane"><span class="mission-icon">✈️</span><span><span class="mission-name">Avión SSS</span><span class="mission-help">S sostenida para volar.</span></span></button>
+          <button class="mission-btn" data-mode="flower"><span class="mission-icon">🌸</span><span><span class="mission-name">Flor AAA</span><span class="mission-help">A sostenida para crecer.</span></span></button>
+          <button class="mission-btn" data-mode="bee"><span class="mission-icon">🐝</span><span><span class="mission-name">Abeja MMM</span><span class="mission-help">M sostenida para zumbar.</span></span></button>
+          <button class="mission-btn" data-mode="candle"><span class="mission-icon">🕯️</span><span><span class="mission-name">Vela FFF</span><span class="mission-help">F sostenida para soplar.</span></span></button>
+          <button class="mission-btn" data-mode="drum"><span class="mission-icon">🥁</span><span><span class="mission-name">Tambor P/T</span><span class="mission-help">Golpes cortos para tocar.</span></span></button>
+        </div>
+      </div>
+
+      <div class="card panel">
+        <h2>Micrófono</h2>
+        <div class="mic-status" id="micStatus">● Micrófono apagado</div>
+        <button class="main-button" id="micButton">▶ Activar micrófono</button>
+        <p class="small-help" id="modeHelp">Di “rrrrr”. Si se parece al perfil R calibrado, el cohete cargará energía.</p>
+        <div class="meter-box">
+          <div class="meter-icon">🎯</div>
+          <div><p class="meter-label">Confianza del objetivo</p><p class="meter-number"><span id="powerNumber">0</span>%</p></div>
+        </div>
+        <div class="audio-bars">
+          <div class="audio-row"><span>GRAVE</span><div class="audio-track"><div class="audio-fill" id="lowFill"></div></div><span id="lowText">0</span></div>
+          <div class="audio-row"><span>MEDIO</span><div class="audio-track"><div class="audio-fill" id="midFill"></div></div><span id="midText">0</span></div>
+          <div class="audio-row"><span>AGUDO</span><div class="audio-track"><div class="audio-fill" id="highFill"></div></div><span id="highText">0</span></div>
+        </div>
+        <div id="detailBox">Predicción: —<br>Calibra R y S para empezar a diferenciar.</div>
+      </div>
+
+      <div class="card panel">
+        <h2>Calibración por niño</h2>
+        <p class="small-help">Pulsa una letra y pide al niño que la repita durante 3 segundos. Se guardará en este navegador.</p>
+        <div class="calib-grid">
+          <button class="calib-btn" data-calib="R"><span>🚀 R</span><small>rrrrr</small></button>
+          <button class="calib-btn" data-calib="S"><span>✈️ S</span><small>sssss</small></button>
+          <button class="calib-btn" data-calib="A"><span>🌸 A</span><small>aaaaa</small></button>
+          <button class="calib-btn" data-calib="M"><span>🐝 M</span><small>mmmmm</small></button>
+          <button class="calib-btn" data-calib="F"><span>🕯️ F</span><small>fffff</small></button>
+          <button class="calib-btn" data-calib="NOISE"><span>🤫 Silencio</span><small>ambiente</small></button>
+        </div>
+        <div class="calib-actions">
+          <button class="secondary-btn" id="exportProfiles">Exportar</button>
+          <button class="secondary-btn danger" id="clearProfiles">Borrar perfiles</button>
+        </div>
+      </div>
+
+      <div class="card reward-card">
+        <div class="reward-top"><span>Progreso hasta recompensa</span><span><span id="progressNumber">0</span>%</span></div>
+        <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <div class="card streak-card">
+        <div class="streak-item"><span class="streak-number" id="secondsNumber">0.0</span><span class="streak-label">segundos</span></div>
+        <div class="streak-item"><span class="streak-number" id="rewardsNumber">0</span><span class="streak-label">logros</span></div>
+        <div class="streak-item"><span class="streak-number" id="levelNumber">1</span><span class="streak-label">nivel</span></div>
+      </div>
+    </aside>
+
+    <section class="main-area">
+      <div class="scene" id="scene">
+        <div class="target-badge">Objetivo: <span id="targetPhoneme">/R/ durante 3 segundos</span></div>
+        <div class="cloud one">☁️</div><div class="cloud two">☁️</div><div class="planet">🪐</div>
+        <div class="star" style="left:18%;top:13%;">⭐</div><div class="star" style="left:70%;top:35%;animation-delay:-.6s;">⭐</div><div class="star" style="left:44%;top:18%;animation-delay:-1.2s;">⭐</div>
+        <div class="ground"></div><div class="tree">🌳</div><div class="school">🏫</div>
+        <div class="wind-particle">💨</div><div class="wind-particle">💨</div><div class="wind-particle">💨</div><div class="wind-particle">💨</div>
+        <div class="character" id="rocketCharacter">🚀<div class="flame" id="rocketFire">🔥</div></div>
+        <div class="character" id="planeCharacter">✈️</div>
+        <div class="character" id="flowerCharacter">🌱</div>
+        <div class="character" id="beeCharacter">🐝</div>
+        <div class="character" id="candleCharacter">🕯️</div>
+        <div class="character" id="drumCharacter">🥁</div>
+        <div class="bubble" id="rewardBubble">¡DESPEGUE!</div>
+        <div class="scene-message" id="sceneMessage">Di: rrrrrr</div>
+      </div>
+
+      <div class="card voice-card">
+        <div>
+          <div class="voice-header"><h2>Onda de voz</h2><span class="phoneme-pill" id="phonemePill">/R/</span></div>
+          <canvas id="waveCanvas" width="900" height="220"></canvas>
+        </div>
+        <div class="tip"><div><p class="tip-small">Consejo</p><p class="tip-text" id="tipText">R larga y vibrante: rrrrrr</p></div></div>
+      </div>
+    </section>
+  </section>
+</main>
+
+<script>
+'use strict';
+
+const modes = {
+  rocket:{label:'R',title:'Cohete RRR',icon:'🚀',phoneme:'/R/',target:'/R/ durante 3 segundos',key:'r',type:'sustain',requiredMs:3000,threshold:.56,help:'Di “rrrrr”. Si se parece al perfil R calibrado, el cohete cargará energía.',tip:'R larga y vibrante: rrrrrr',idle:'Di: rrrrrr',charging:'¡Muy bien! Sigue con la R…',reward:'¡DESPEGUE!'},
+  plane:{label:'S',title:'Avión SSS',icon:'✈️',phoneme:'/S/',target:'/S/ durante 3 segundos',key:'s',type:'sustain',requiredMs:3000,threshold:.60,help:'Di “sssss”. Si se parece al perfil S calibrado, aparece viento.',tip:'S suave y larga: ssssss',idle:'Di: ssssss',charging:'¡Sigue soplando! El avión sube…',reward:'¡A VOLAR!'},
+  flower:{label:'A',title:'Flor AAA',icon:'🌸',phoneme:'/A/',target:'/A/ durante 3 segundos',key:'a',type:'sustain',requiredMs:3000,threshold:.58,help:'Di “aaaaa”. La flor crece cuando detecta la vocal A.',tip:'A abierta y larga: aaaaaa',idle:'Di: aaaaaa',charging:'¡La flor está creciendo! Mantén la A…',reward:'¡FLORECIÓ!'},
+  bee:{label:'M',title:'Abeja MMM',icon:'🐝',phoneme:'/M/',target:'/M/ durante 3 segundos',key:'m',type:'sustain',requiredMs:3000,threshold:.58,help:'Di “mmmmm”. La abeja zumba cuando detecta la M.',tip:'M con labios cerrados: mmmmmm',idle:'Di: mmmmmm',charging:'¡La abeja zumba! Mantén la M…',reward:'¡ZUMBIDO!'},
+  candle:{label:'F',title:'Vela FFF',icon:'🕯️',phoneme:'/F/',target:'/F/ durante 3 segundos',key:'f',type:'sustain',requiredMs:3000,threshold:.58,help:'Di “fffff”. La vela se apaga cuando detecta soplo F.',tip:'F de soplo suave: ffffff',idle:'Di: ffffff',charging:'¡Sopla la vela! Mantén la F…',reward:'¡VELA APAGADA!'},
+  drum:{label:'PT',title:'Tambor P/T',icon:'🥁',phoneme:'/P/ /T/',target:'5 golpes cortos',key:'p',type:'hit',requiredHits:5,threshold:.75,help:'Di “pa” o “ta”. Cada pico claro cuenta como golpe.',tip:'Golpes cortos: pa, pa, ta, ta',idle:'Di: pa / ta',charging:'¡PUM! Buen golpe corto.',reward:'¡RITMO!'}
+};
+
+let currentMode='rocket';
+let audioContext=null, analyser=null, micStream=null, micOn=false, manualMode=false;
+let freqData=new Uint8Array(1024), timeData=new Float32Array(2048);
+let profiles=loadProfiles();
+let calibratingLabel=null, calibSamples=[], calibEnd=0;
+let featureHistory=[], previousRms=0, previousScore=0, heldMs=0, progress=0, rewards=0, level=1, hitCount=0, lastHitTime=0;
+let manualHold=false, manualHoldStart=0, lastFrame=performance.now(), wavePhase=0;
+
+const $=id=>document.getElementById(id);
+const missionButtons=document.querySelectorAll('.mission-btn');
+const calibButtons=document.querySelectorAll('.calib-btn');
+const welcome=$('welcome'), welcomeButton=$('welcomeButton'), skipButton=$('skipButton'), welcomeError=$('welcomeError');
+const micButton=$('micButton'), micStatus=$('micStatus'), detailBox=$('detailBox');
+const activityIcon=$('activityIcon'), activityTitle=$('activityTitle'), modeHelp=$('modeHelp'), scene=$('scene');
+const targetPhoneme=$('targetPhoneme'), phonemePill=$('phonemePill'), sceneMessage=$('sceneMessage'), tipText=$('tipText');
+const powerNumber=$('powerNumber'), progressNumber=$('progressNumber'), progressFill=$('progressFill'), secondsNumber=$('secondsNumber'), rewardsNumber=$('rewardsNumber'), levelNumber=$('levelNumber');
+const lowFill=$('lowFill'), midFill=$('midFill'), highFill=$('highFill'), lowText=$('lowText'), midText=$('midText'), highText=$('highText');
+const rocket=$('rocketCharacter'), rocketFire=$('rocketFire'), plane=$('planeCharacter'), flower=$('flowerCharacter'), bee=$('beeCharacter'), candle=$('candleCharacter'), drum=$('drumCharacter'), rewardBubble=$('rewardBubble');
+const windParticles=document.querySelectorAll('.wind-particle');
+const canvas=$('waveCanvas'), ctx=canvas.getContext('2d');
+
+function clamp(v,min=0,max=1){return Math.max(min,Math.min(max,v))}
+function pct(v){return Math.round(clamp(v,0,1)*100)}
+function normalize(v,min,max){return clamp((v-min)/(max-min),0,1)}
+
+async function startMic(){
+  try{
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw {name:'SecurityError'};
+    micStream=await navigator.mediaDevices.getUserMedia({audio:true,video:false});
+    audioContext=new (window.AudioContext||window.webkitAudioContext)();
+    analyser=audioContext.createAnalyser();
+    analyser.fftSize=2048;
+    analyser.smoothingTimeConstant=.75;
+    audioContext.createMediaStreamSource(micStream).connect(analyser);
+    freqData=new Uint8Array(analyser.frequencyBinCount);
+    timeData=new Float32Array(analyser.fftSize);
+    micOn=true;manualMode=false;updateMicUi();return true;
+  }catch(e){
+    const map={
+      NotAllowedError:'<b>Permiso denegado.</b> Pulsa el candado de la barra del navegador → Permitir micrófono → recarga.',
+      NotFoundError:'<b>Micrófono no encontrado.</b> Conecta o selecciona un micrófono.',
+      NotReadableError:'<b>Micrófono ocupado.</b> Otra aplicación lo está usando.',
+      SecurityError:'<b>Contexto no seguro.</b> Abre desde localhost, Live Server o HTTPS.'
+    };
+    return map[e.name]||`<b>Error:</b> ${e.message||e.name||'No se pudo activar el micrófono.'}`;
+  }
+}
+function stopMic(){
+  if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null}
+  if(audioContext){audioContext.close();audioContext=null}
+  analyser=null;micOn=false;heldMs=0;progress=0;updateMicUi();
+}
+async function toggleMic(){ if(micOn){stopMic();return} const r=await startMic(); if(r===true)closeWelcome(); else showWelcomeError(r); }
+function updateMicUi(){
+  if(micOn){micStatus.textContent='● Micrófono activo';micStatus.className='mic-status on';micButton.textContent='⏹ Apagar micrófono';micButton.classList.add('stop')}
+  else{micStatus.textContent=manualMode?'● Modo manual':'● Micrófono apagado';micStatus.className='mic-status '+(manualMode?'warn':'');micButton.textContent='▶ Activar micrófono';micButton.classList.remove('stop')}
+}
+function showWelcomeError(html){welcomeError.innerHTML=html;welcomeError.classList.add('show')}
+function closeWelcome(){welcome.style.opacity='0';welcome.style.pointerEvents='none';setTimeout(()=>welcome.style.display='none',360)}
+welcomeButton.addEventListener('click',async()=>{welcomeButton.disabled=true;welcomeButton.textContent='⏳ Solicitando permiso…';welcomeError.classList.remove('show');const r=await startMic();if(r===true)closeWelcome();else{welcomeButton.disabled=false;welcomeButton.textContent='▶ INTENTAR DE NUEVO';showWelcomeError(r)}})
+skipButton.addEventListener('click',()=>{manualMode=true;updateMicUi();closeWelcome()})
+micButton.addEventListener('click',toggleMic)
+
+function loadProfiles(){try{return JSON.parse(localStorage.getItem('phonovisual_profiles_v1')||'{}')}catch(e){return{}}}
+function saveProfiles(){localStorage.setItem('phonovisual_profiles_v1',JSON.stringify(profiles));updateCalibButtons()}
+function updateCalibButtons(){
+  calibButtons.forEach(btn=>{
+    const lab=btn.dataset.calib;
+    btn.classList.toggle('done',!!profiles[lab]);
+    btn.classList.toggle('recording',lab===calibratingLabel);
+  });
+}
+function startCalibration(label){
+  if(!micOn){showWelcomeError('Activa primero el micrófono para calibrar.');welcome.style.display='flex';welcome.style.opacity='1';welcome.style.pointerEvents='auto';return}
+  calibratingLabel=label;calibSamples=[];calibEnd=performance.now()+3000;updateCalibButtons();
+  detailBox.innerHTML=`Grabando perfil <b>${label}</b> durante 3 segundos…`;
+}
+calibButtons.forEach(btn=>btn.addEventListener('click',()=>startCalibration(btn.dataset.calib)));
+$('clearProfiles').addEventListener('click',()=>{profiles={};saveProfiles();detailBox.textContent='Perfiles borrados. Vuelve a calibrar R, S, A, M y F.'});
+$('exportProfiles').addEventListener('click',()=>{
+  const txt=JSON.stringify(profiles,null,2);
+  navigator.clipboard?.writeText(txt);
+  detailBox.textContent='Perfiles copiados al portapapeles. También puedes verlos en la consola.';
+  console.log('PhonoVisual profiles:',profiles);
+});
+
+function updateMode(mode){
+  currentMode=mode;const data=modes[mode];
+  heldMs=0;progress=0;hitCount=0;previousScore=0;
+  missionButtons.forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  activityIcon.textContent=data.icon;activityTitle.textContent=data.title;modeHelp.textContent=data.help;
+  targetPhoneme.textContent=data.target;phonemePill.textContent=data.phoneme;tipText.textContent=data.tip;sceneMessage.textContent=data.idle;
+  scene.className='scene';if(['plane','flower','bee'].includes(mode))scene.classList.add('plane');if(['candle','drum'].includes(mode))scene.classList.add('warm');
+  rocket.style.display=mode==='rocket'?'block':'none';plane.style.display=mode==='plane'?'block':'none';flower.style.display=mode==='flower'?'block':'none';bee.style.display=mode==='bee'?'block':'none';candle.style.display=mode==='candle'?'block':'none';drum.style.display=mode==='drum'?'block':'none';
+  windParticles.forEach(p=>p.style.display='none');updateUi(0,0);positionCharacters(0);
+}
+missionButtons.forEach(b=>b.addEventListener('click',()=>updateMode(b.dataset.mode)));
+
+window.addEventListener('keydown',e=>{
+  const key=e.key.toLowerCase(), data=modes[currentMode];
+  if(data.type==='sustain' && key===data.key){manualHold=true;manualHoldStart=manualHoldStart||performance.now()-heldMs;manualMode=!micOn;updateMicUi()}
+  if(currentMode==='drum' && ['p','t',' '].includes(key)) triggerHit();
+});
+window.addEventListener('keyup',e=>{
+  const key=e.key.toLowerCase(), data=modes[currentMode];
+  if(data.type==='sustain' && key===data.key){manualHold=false;manualHoldStart=0;heldMs=0;progress=0}
+});
+
+function getRms(buf){let s=0;for(let i=0;i<buf.length;i++)s+=buf[i]*buf[i];return Math.sqrt(s/buf.length)}
+function getZcr(buf){let c=0;for(let i=1;i<buf.length;i++){if((buf[i-1]<0&&buf[i]>=0)||(buf[i-1]>0&&buf[i]<=0))c++}return c/buf.length}
+function bandEnergy(lo,hi){
+  if(!audioContext||!analyser)return 0;
+  const nyq=audioContext.sampleRate/2,hz=nyq/freqData.length;
+  const a=Math.max(0,Math.floor(lo/hz)),b=Math.min(freqData.length-1,Math.ceil(hi/hz));let sum=0;
+  for(let i=a;i<=b;i++)sum+=freqData[i]/255;
+  return sum/Math.max(1,b-a+1);
+}
+function spectralCentroid(){
+  if(!audioContext)return 0;
+  const nyq=audioContext.sampleRate/2,hz=nyq/freqData.length;let num=0,den=0;
+  for(let i=1;i<freqData.length;i++){const v=freqData[i]/255;num+=i*hz*v;den+=v}
+  return den?num/den/nyq:0;
+}
+function spectralFlatness(){
+  let geo=0,arith=0,n=0;
+  for(let i=1;i<freqData.length;i++){const v=freqData[i]/255+1e-6;geo+=Math.log(v);arith+=v;n++}
+  return Math.exp(geo/n)/(arith/n);
+}
+function spectralRolloff(){
+  let total=0;for(let i=0;i<freqData.length;i++)total+=freqData[i];
+  let acc=0;for(let i=0;i<freqData.length;i++){acc+=freqData[i];if(acc>=total*.85)return i/freqData.length}
+  return 0;
+}
+function extractFeatures(){
+  if(!micOn||!analyser)return null;
+  analyser.getFloatTimeDomainData(timeData);
+  analyser.getByteFrequencyData(freqData);
+  const rms=getRms(timeData),zcr=getZcr(timeData);
+  const low=bandEnergy(80,500),lowMid=bandEnergy(500,1400),mid=bandEnergy(1400,3200),high=bandEnergy(4000,8000),air=bandEnergy(8000,12000);
+  const total=low+lowMid+mid+high+air+1e-6;
+  const centroid=spectralCentroid(), flatness=spectralFlatness(), rolloff=spectralRolloff();
+  const transient=Math.max(0,rms-previousRms);previousRms=rms;
+  featureHistory.push(rms);if(featureHistory.length>18)featureHistory.shift();
+  const mean=featureHistory.reduce((a,b)=>a+b,0)/featureHistory.length;
+  const stability=1-Math.min(1,Math.sqrt(featureHistory.reduce((a,b)=>a+(b-mean)*(b-mean),0)/featureHistory.length)/.035);
+  return {rms,zcr,lowRatio:low/total,lowMidRatio:lowMid/total,midRatio:mid/total,highRatio:high/total,airRatio:air/total,centroid,flatness,rolloff,stability,transient,low:low+lowMid,mid,high:high+air};
+}
+const featureKeys=['rms','zcr','lowRatio','lowMidRatio','midRatio','highRatio','airRatio','centroid','flatness','rolloff','stability'];
+const weights={rms:.7,zcr:1.1,lowRatio:1.1,lowMidRatio:1.1,midRatio:.9,highRatio:1.4,airRatio:1.25,centroid:1.25,flatness:1.25,rolloff:1.05,stability:.7};
+
+function meanProfile(samples){
+  const p={};
+  featureKeys.forEach(k=>p[k]=samples.reduce((a,s)=>a+s[k],0)/samples.length);
+  p.count=samples.length;p.savedAt=new Date().toISOString();
+  return p;
+}
+function distance(a,p){
+  let d=0,w=0;
+  featureKeys.forEach(k=>{const wt=weights[k]||1;const diff=(a[k]-p[k]);d+=wt*diff*diff;w+=wt});
+  return Math.sqrt(d/w);
+}
+function heuristicScores(f){
+  if(!f)return {label:null,confidence:0,all:{}};
+  const voice=normalize(f.rms,.012,.085);
+  const all={
+    R:clamp((normalize(f.lowRatio+f.lowMidRatio*.8,.38,.78)*.48 + voice*.25 + (1-normalize(f.highRatio+f.airRatio,.18,.45))*.18 + (1-normalize(f.zcr,.12,.25))*.09)),
+    S:clamp((normalize(f.highRatio+f.airRatio*.8,.22,.62)*.55 + normalize(f.zcr,.08,.24)*.33 + voice*.12 - normalize(f.lowRatio,.28,.58)*.25)),
+    A:clamp((normalize(f.lowRatio+f.lowMidRatio+f.midRatio*.5,.55,.9)*.45 + voice*.3 + (1-normalize(f.highRatio+f.airRatio,.16,.42))*.15 + f.stability*.1)),
+    M:clamp((normalize(f.lowRatio+f.lowMidRatio*.75,.46,.82)*.5 + (1-normalize(f.highRatio+f.airRatio+f.zcr,.18,.52))*.3 + normalize(f.rms,.012,.065)*.2)),
+    F:clamp((normalize(f.midRatio+f.highRatio*.8,.28,.62)*.48 + normalize(f.zcr,.07,.22)*.32 + (1-normalize(f.airRatio,.18,.42))*.12 + voice*.08 - normalize(f.lowRatio,.28,.58)*.25))
+  };
+  const sorted=Object.entries(all).sort((a,b)=>b[1]-a[1]);
+  return {label:sorted[0][0],confidence:sorted[0][1],all};
+}
+function classify(f){
+  if(!f)return {label:null,confidence:0,method:'sin micro',all:{}};
+  const available=Object.keys(profiles).filter(k=>k!=='NOISE');
+  if(available.length>=2){
+    const ds=available.map(label=>({label,d:distance(f,profiles[label])})).sort((a,b)=>a.d-b.d);
+    let conf=clamp((ds[1].d-ds[0].d)/(ds[1].d+.0001),0,1);
+    conf=clamp(conf*1.8,0,1);
+    if(profiles.NOISE){
+      const noiseD=distance(f,profiles.NOISE);
+      if(noiseD<ds[0].d*1.05)conf*=.25;
+    }
+    return {label:ds[0].label,confidence:conf,method:'calibrado',distances:ds};
+  }
+  return {...heuristicScores(f),method:'heurístico'};
+}
+function handleCalibration(f,now){
+  if(!calibratingLabel)return;
+  if(f && f.rms>.006)calibSamples.push({...f});
+  const remain=Math.max(0,Math.ceil((calibEnd-now)/1000));
+  detailBox.innerHTML=`Grabando perfil <b>${calibratingLabel}</b>… ${remain}s`;
+  if(now>=calibEnd){
+    if(calibSamples.length<12){
+      detailBox.innerHTML=`No se pudo calibrar <b>${calibratingLabel}</b>: señal demasiado baja. Acércate al micro y repite.`;
+    }else{
+      profiles[calibratingLabel]=meanProfile(calibSamples);
+      saveProfiles();
+      detailBox.innerHTML=`Perfil <b>${calibratingLabel}</b> guardado con ${calibSamples.length} muestras.`;
+    }
+    calibratingLabel=null;calibSamples=[];updateCalibButtons();
+  }
+}
+function triggerHit(){
+  hitCount+=1;progress=clamp(hitCount/modes.drum.requiredHits,0,1);sceneMessage.textContent=modes.drum.charging;showBubble('¡PUM!',true);if(hitCount>=modes.drum.requiredHits)completeReward()
+}
+function analyze(now){
+  const f=extractFeatures();
+  handleCalibration(f,now);
+  const prediction=classify(f);
+  if(f && currentMode==='drum'){
+    const hit=f.transient>.018 && f.rms>.035;
+    if(hit && now-lastHitTime>340){lastHitTime=now;triggerHit()}
+  }
+  return {features:f,prediction};
+}
+
+function completeReward(){
+  const data=modes[currentMode];rewards++;level=1+Math.floor(rewards/3);showBubble(data.reward,false);sceneMessage.textContent=data.reward+' 🎉';
+  if(currentMode==='rocket'){rocket.style.transition='transform 1s cubic-bezier(.2,.9,.2,1)';rocket.style.transform='translateX(-50%) translateY(-390px) rotate(12deg) scale(1.08)';rocketFire.style.opacity=1}
+  if(currentMode==='plane'){plane.style.transition='transform 1s cubic-bezier(.2,.9,.2,1)';plane.style.transform='translate(560px,-170px) rotate(-14deg) scale(1.08)'}
+  if(currentMode==='flower'){flower.textContent='🌸';flower.style.transform='translateX(-50%) scale(1.35)'}
+  if(currentMode==='bee'){bee.style.transform='translate(560px,-170px) rotate(-14deg) scale(1.08)'}
+  if(currentMode==='candle'){candle.textContent='💨';candle.style.transform='translateX(-50%) scale(1.2)'}
+  if(currentMode==='drum'){drum.style.transition='transform .35s ease';drum.style.transform='translate(-50%,-44%) scale(1.22) rotate(-4deg)'}
+  updateCounters();
+  setTimeout(()=>{heldMs=0;progress=0;hitCount=0;manualHold=false;windParticles.forEach(p=>p.style.display='none');rocketFire.style.opacity=0;sceneMessage.textContent=data.idle;positionCharacters(0);updateUi(0,0)},1400)
+}
+function showBubble(text,quick){rewardBubble.textContent=text;rewardBubble.classList.remove('show');rewardBubble.style.left=currentMode==='drum'?'58%':'52%';rewardBubble.style.top=currentMode==='drum'?'28%':'22%';void rewardBubble.offsetWidth;rewardBubble.classList.add('show');setTimeout(()=>rewardBubble.classList.remove('show'),quick?380:1200)}
+
+function loop(now){
+  const dt=now-lastFrame;lastFrame=now;
+  const {features:f,prediction:p}=analyze(now);
+  const data=modes[currentMode];
+  let targetPower=0;
+  if(data.type==='sustain'){
+    const targetOk=p.label===data.label && p.confidence>=data.threshold;
+    targetPower=targetOk?p.confidence:0;
+    if(micOn){
+      if(targetOk){heldMs+=dt;progress=clamp(heldMs/data.requiredMs,0,1);sceneMessage.textContent=data.charging;if(progress>=1)completeReward()}
+      else{heldMs=Math.max(0,heldMs-dt*1.25);progress=clamp(heldMs/data.requiredMs,0,1);if(heldMs<120)sceneMessage.textContent=data.idle}
+    }
+    if(!micOn && manualHold){heldMs=now-manualHoldStart;progress=clamp(heldMs/data.requiredMs,0,1);targetPower=progress;sceneMessage.textContent=data.charging;if(progress>=1)completeReward()}
+  } else {
+    targetPower=progress;
+    progress=Math.max(0,progress-dt*.0008);
+  }
+  previousScore=previousScore*.70+targetPower*.30;
+  updateBars(f);
+  updateDetails(p,f);
+  positionCharacters(progress);
+  updateUi(previousScore,heldMs);
+  drawWave(previousScore,f);
+  requestAnimationFrame(loop);
+}
+function updateBars(f){
+  const low=f?pct(f.low):0,mid=f?pct(f.mid*2.5):0,high=f?pct(f.high*2.5):0;
+  lowFill.style.width=low+'%';midFill.style.width=mid+'%';highFill.style.width=high+'%';
+  lowText.textContent=low;midText.textContent=mid;highText.textContent=high;
+}
+function updateDetails(p,f){
+  const profs=Object.keys(profiles).filter(k=>k!=='NOISE').join(', ')||'ninguno';
+  const extra=f?`RMS ${f.rms.toFixed(3)} · ZCR ${f.zcr.toFixed(3)} · centroid ${f.centroid.toFixed(2)}`:'sin señal';
+  detailBox.innerHTML=`Predicción: <b>${p.label||'—'}</b> · Confianza: <b>${pct(p.confidence)}%</b> · Método: <b>${p.method}</b><br>Perfiles: ${profs}<br>${extra}`;
+}
+function positionCharacters(power){
+  rocket.style.transition='transform .08s linear';plane.style.transition='transform .08s linear';flower.style.transition='transform .08s linear';bee.style.transition='transform .08s linear';candle.style.transition='transform .08s linear';drum.style.transition='transform .08s linear';
+  const p=pct(power);
+  if(currentMode==='rocket'){const lift=p*2.35,w=Math.sin(performance.now()/85)*(p>10?3:0);rocket.style.transform=`translateX(-50%) translateY(${-lift}px) rotate(${w}deg)`;rocketFire.style.opacity=p>8?1:0}
+  if(currentMode==='plane'){const x=18+p*4.1,y=40-p*1.4;plane.style.transform=`translate(${x}px, ${y}px) rotate(${p>40?-8:-2}deg)`;windParticles.forEach(el=>el.style.display=p>12?'block':'none')}
+  if(currentMode==='flower'){flower.textContent=p>72?'🌸':p>38?'🌷':'🌱';flower.style.transform=`translateX(-50%) scale(${.55+p/115})`}
+  if(currentMode==='bee'){const x=24+p*3.8,y=Math.sin(performance.now()/120)*(12+p*.12)-p*.65;bee.style.transform=`translate(${x}px, ${y}px) rotate(${Math.sin(performance.now()/90)*12}deg)`}
+  if(currentMode==='candle'){candle.textContent=p>82?'💨':p>45?'🕯️':'🔥';candle.style.transform=`translateX(-50%) scale(${1+Math.min(p/260,.25)})`}
+  if(currentMode==='drum'){const scale=1+Math.min(progress/4.2,.25);drum.style.transform=`translate(-50%,-44%) scale(${scale}) rotate(${hitCount%2?-3:3}deg)`}
+}
+function updateUi(power,ms){powerNumber.textContent=pct(power);progressNumber.textContent=pct(progress);progressFill.style.width=pct(progress)+'%';secondsNumber.textContent=(ms/1000).toFixed(1);updateCounters()}
+function updateCounters(){rewardsNumber.textContent=rewards;levelNumber.textContent=level}
+function drawWave(power,f){
+  wavePhase+=.045+power/18;ctx.clearRect(0,0,canvas.width,canvas.height);
+  const g=ctx.createLinearGradient(0,0,canvas.width,0);g.addColorStop(0,'#8b5cf6');g.addColorStop(.5,'#38bdf8');g.addColorStop(1,'#fb7185');
+  ctx.lineWidth=7;ctx.lineCap='round';ctx.strokeStyle=g;ctx.beginPath();
+  if(micOn && timeData){
+    const slice=canvas.width/timeData.length;
+    for(let i=0;i<timeData.length;i++){const x=i*slice,y=canvas.height/2+timeData[i]*canvas.height*(.36+power*.35);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}
+  }else{
+    const amp=14+pct(power)*.72, freq=currentMode==='rocket'?.035:currentMode==='plane'?.07:.12;
+    for(let x=0;x<canvas.width;x+=6){let y=canvas.height/2+Math.sin(x*freq+wavePhase*9)*amp;if(currentMode==='drum')y+=Math.sin(x*.22+wavePhase*14)*Math.min(pct(progress)*.35,34);if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}
+  }
+  ctx.stroke();ctx.globalAlpha=.16;ctx.lineWidth=2;ctx.strokeStyle='#334155';ctx.beginPath();ctx.moveTo(20,canvas.height/2);ctx.lineTo(canvas.width-20,canvas.height/2);ctx.stroke();ctx.globalAlpha=1;
+}
+
+updateMode('rocket');updateCalibButtons();requestAnimationFrame(loop);
+</script>
+</body>
+</html>
