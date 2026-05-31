@@ -1,0 +1,10 @@
+{
+  "categoria": "Educación",
+  "icono": "📚",
+  "etiquetas": ["fonología", "visual", "infantil", "accesibilidad", "aula"],
+  "descripcion": "Recurso educativo visual para alumnado infantil o apoyo al trabajo fonológico.",
+  "demo": "",
+  "destacado": true,
+  "orden": 13,
+  "ocultar": false
+}
